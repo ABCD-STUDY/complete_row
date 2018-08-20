@@ -1,0 +1,45 @@
+{
+	"name": "Complete Rows",
+
+	"description": "Colors each row of an instrument if a value has been provided.",
+
+	"namespace": "ABCD\\CompleteRows",
+
+	"authors": [
+		{
+			"name": "Hauke Bartsch",
+			"email": "HaukeBartsch@gmail.com",
+			"institution": "ABCD Study, UC San Diego"
+		}
+	],
+
+	"permissions": [
+                "redcap_every_page_top"
+	],
+
+        "enable-every-page-hooks-on-system-pages": false,
+
+        "links": {
+        },
+        
+        "no-auth-pages": [
+        ],
+
+	"system-settings": [
+        ],
+
+	"project-settings": [
+                {
+			"key": "row-color",
+			"name": "Color used to highlight rows with a value",
+			"required": true,
+			"type": "radio",
+                        "choices": [
+	 	   	   { "value": "red", "name": "red" },
+			   { "value": "green", "name": "green" },
+			   { "value": "blue", "name": "green" }
+                        ],
+		        "default": "green"
+		}
+        ]
+}
