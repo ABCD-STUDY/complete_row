@@ -45,25 +45,60 @@ class CompleteRow extends AbstractExternalModule {
 	    break;
          }
        }
-       var inputs = jQuery(this).find('select');
-       for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
-	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
-	 //              "\" full: " + JSON.stringify(inputs[i]));
-         if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
-	    existingEntries = true; // at least one input in this tr is not empty
-	    break;
-	 }
+       if (!existingEntries) {
+          var inputs = jQuery(this).find('select');
+          for (var i = 0; i < inputs.length; i++) {
+            //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	    //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	    //              "\" full: " + JSON.stringify(inputs[i]));
+            if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
+	       existingEntries = true; // at least one input in this tr is not empty
+	       break;
+	    }
+          }
        }
-       var inputs = jQuery(this).find('textarea');
-       for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
-	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
-	 //              "\" full: " + JSON.stringify(inputs[i]));
-         if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
-	    existingEntries = true; // at least one input in this tr is not empty
-	    break;
-	 }
+       if (!existingEntries) {
+          var inputs = jQuery(this).find('textarea');
+          for (var i = 0; i < inputs.length; i++) {
+             //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	     //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	     //              "\" full: " + JSON.stringify(inputs[i]));
+             if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
+	        existingEntries = true; // at least one input in this tr is not empty
+	        break;
+ 	     }
+          }
+       } 
+       if (!existingEntries) {
+         // we could be in a matrix row right now, in that case we should see a td.labelmatrix
+         var inputs = jQuery(this).find('td.labelmatrix');
+         for (var i = 0; i < inputs.length; i++) {
+             var columns = jQuery(inputs[i]).find('td.choicematrix'); // get a list of the values in this row
+	     for (var j = 0; j < columns.length; j++) {
+	         if ( jQuery(columns[j]).find('input').last().val() !== "" ) {
+	         	    existingEntries = true; // at least one input in this tr is not empty
+	              break;
+	         }
+	     }
+	     if (existingEntries)
+	        break;
+         }
+       }
+       if (!existingEntries) {
+          // vertical checkboxes
+          var inputs = jQuery(this).find('td.data');
+          for (var i = 0; i < inputs.length; i++) {
+             var checkboxes = jQuery(inputs[i]).find('div.choicevert'); // get a list of the values in this row
+	     for (var j = 0; j < checkboxes.length; j++) {
+	        // this would fit radio buttons as well - make it specific to checkbox only
+	        if (jQuery(checkboxes[j]).find('input').last().val() !== "" && jQuery(checkboxes[j]).find('input').first().attr('type') == 'checkbox') {
+	           existingEntries = true;
+	  	   break;
+	        }
+             }
+	     if (existingEntries)
+	        break;
+          }
        }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
@@ -122,25 +157,60 @@ class CompleteRow extends AbstractExternalModule {
 	     break;
          }
        }
-       var inputs = jQuery(this).find('select');
-       for (var i = 0; i < inputs.length; i++) {
-         // console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " +
-	 //             inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " +
-	 //             JSON.stringify(inputs[i]));
-         if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
-	    existingEntries = true; // at least one input in this tr is not empty
-	    break;
-	 }
-       }	 
-       var inputs = jQuery(this).find('textarea');
-       for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
-	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
-	 //              "\" full: " + JSON.stringify(inputs[i]));
-         if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
-	    existingEntries = true; // at least one input in this tr is not empty
-	    break;
-	 }
+       if (!existingEntries) {
+         var inputs = jQuery(this).find('select');
+         for (var i = 0; i < inputs.length; i++) {
+            // console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " +  
+  	    //             inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " +
+	    //             JSON.stringify(inputs[i]));
+            if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
+	       existingEntries = true; // at least one input in this tr is not empty
+	       break;
+	    }
+         }
+       }
+       if (!existingEntries) {
+         var inputs = jQuery(this).find('textarea');
+         for (var i = 0; i < inputs.length; i++) {
+           //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	   //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	   //              "\" full: " + JSON.stringify(inputs[i]));
+           if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
+	      existingEntries = true; // at least one input in this tr is not empty
+	      break;
+	   }
+         }
+       }
+       if (!existingEntries) {
+         // we could be in a matrix row right now, in that case we should see a td.labelmatrix
+         var inputs = jQuery(this).find('td.labelmatrix');
+         for (var i = 0; i < inputs.length; i++) {
+             var columns = jQuery(inputs[i]).find('td.choicematrix'); // get a list of the values in this row
+	     for (var j = 0; j < columns.length; j++) {
+	         if ( jQuery(columns[j]).find('input').last().val() !== "" ) {
+	         	    existingEntries = true; // at least one input in this tr is not empty
+	              break;
+	         }
+	     }
+	     if (existingEntries)
+	        break;
+         }
+       }
+       if (!existingEntries) {
+          // vertical checkboxes
+          var inputs = jQuery(this).find('td.data');
+          for (var i = 0; i < inputs.length; i++) {
+             var checkboxes = jQuery(inputs[i]).find('div.choicevert'); // get a list of the values in this row
+	     for (var j = 0; j < checkboxes.length; j++) {
+	        // this would fit radio buttons as well - make it specific to checkbox only
+	        if (jQuery(checkboxes[j]).find('input').last().val() !== "" && jQuery(checkboxes[j]).find('input').first().attr('type') == 'checkbox') {
+	           existingEntries = true;
+	  	   break;
+	        }
+             }
+	     if (existingEntries)
+	        break;
+          }
        }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
