@@ -1,4 +1,10 @@
 <?php
+/*
+ *  CompleteRow an extension to highlight rows that have been filled out.
+ *  This extension makes it easier for participants and research assistents
+ *  to see which rows require entries.
+ */
+
 namespace ABCD\CompleteRow;
 
 use ExternalModules\AbstractExternalModule;
@@ -15,7 +21,7 @@ class CompleteRow extends AbstractExternalModule {
                         ?>
 <script type='text/javascript'>
 
-// color all rows that have values assigned by the user
+  // color all rows that have values assigned by the user
   function updateBackgrounds(color) {
      jQuery('tbody tr').each(function() {
        // for each row we check now if there is at least one entry in there that has been set
@@ -24,7 +30,11 @@ class CompleteRow extends AbstractExternalModule {
        var inputs = jQuery(this).find('input');
        // for each of the inputs in this row see if at least one entry has a value (muliple-choice answers have multiple inputs)
        for (var i = 0; i < inputs.length; i++) {
-         console.log("the type of this is :" + inputs[i].type + " value: " + inputs[i].value);
+         //console.log("the type of this is :" + inputs[i].type + " value: " + inputs[i].value);
+	 if (jQuery(inputs[i]).attr('readonly') == "readonly") { // assume that this field is ok
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;	 
+	 }	 
          if (inputs[i].type == "radio" && inputs[i].checked) {
             //console.log("Found set in " + jQuery(this).attr('id') + " as " + inputs[i].value + " input: " + inputs[i]);
 	    existingEntries = true; // at least one input in this tr is not empty
@@ -37,12 +47,24 @@ class CompleteRow extends AbstractExternalModule {
        }
        var inputs = jQuery(this).find('select');
        for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	 //              "\" full: " + JSON.stringify(inputs[i]));
          if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
 	    existingEntries = true; // at least one input in this tr is not empty
 	    break;
 	 }
-       }	 
+       }
+       var inputs = jQuery(this).find('textarea');
+       for (var i = 0; i < inputs.length; i++) {
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	 //              "\" full: " + JSON.stringify(inputs[i]));
+         if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;
+	 }
+       }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
        } else if (inputs.length > 0) {
@@ -79,7 +101,13 @@ class CompleteRow extends AbstractExternalModule {
        var inputs = jQuery(this).find('input');
        // for each of the inputs in this row see if at least one entry has a value (muliple-choice answers have multiple inputs)
        for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
+         // console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " +
+	 //             inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " +
+	 //             JSON.stringify(inputs[i]));
+	 if (jQuery(inputs[i]).attr('readonly') == "readonly") { // assume that this field is ok
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;	 
+	 }	 
          if (inputs[i].type == "radio" && inputs[i].checked) {
             //console.log("Found set in " + jQuery(this).attr('id') + " as " + inputs[i].value + " input: " + inputs[i]);
 	    existingEntries = true; // at least one input in this tr is not empty
@@ -96,12 +124,24 @@ class CompleteRow extends AbstractExternalModule {
        }
        var inputs = jQuery(this).find('select');
        for (var i = 0; i < inputs.length; i++) {
-         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
+         // console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " +
+	 //             inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " +
+	 //             JSON.stringify(inputs[i]));
          if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
 	    existingEntries = true; // at least one input in this tr is not empty
 	    break;
 	 }
        }	 
+       var inputs = jQuery(this).find('textarea');
+       for (var i = 0; i < inputs.length; i++) {
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value +
+	 //              "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() +
+	 //              "\" full: " + JSON.stringify(inputs[i]));
+         if ( inputs[i].type == "textarea" && inputs[i].value !== "") {
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;
+	 }
+       }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
        } else if (inputs.length > 0) {
@@ -126,7 +166,12 @@ class CompleteRow extends AbstractExternalModule {
         }
 
 	protected function getColor() {
-           $color = $this->getProjectSetting('row-color');
+           $color  = $this->getProjectSetting('row-color');
+           $colorM = $this->getProjectSetting('row-color-manual');
+	   $colorM = trim($colorM); // ignore leading and trailing spaces
+	   if (strlen($colorM) > 0) {
+	      $color = $colorM;
+	   }
 	   return $color;
         }
 }

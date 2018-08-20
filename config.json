@@ -1,7 +1,7 @@
 {
 	"name": "Complete Row",
 
-	"description": "Colors each row of an instrument if a value has been provided.",
+	"description": "Colors each row of an instrument - if a value has been provided. This will highlight rows with missing values to improve their visibility.",
 
 	"namespace": "ABCD\\CompleteRow",
 
@@ -32,15 +32,23 @@
 	"project-settings": [
                 {
 			"key": "row-color",
-			"name": "Color used to highlight rows with a value",
-			"required": true,
+			"name": "Color used to highlight rows with an entered value",
+			"required": false,
 			"type": "radio",
                         "choices": [
-	 	   	   { "value": "red", "name": "red" },
-			   { "value": "green", "name": "green" },
-			   { "value": "blue", "name": "green" }
+	 	   	    { "name": "red", "value": "#ffe6e6" },
+			    { "name": "green", "value": "#DBF7DF" },
+			    { "name": "blue", "value": "#99ddff" },
+			    { "name": "stay green", "value": "#DBF7DF" }
                         ],
-		        "default": "green"
+		        "default": "#DBF7DF"
+		},
+                {
+			"key": "row-color-manual",
+			"name": "Manually set row color (clear this field to use a predefined color)",
+			"required": false,
+			"type": "text",
+		        "default": ""
 		}
         ]
 }
