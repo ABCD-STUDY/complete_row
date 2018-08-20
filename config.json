@@ -1,9 +1,9 @@
 {
-	"name": "Complete Rows",
+	"name": "Complete Row",
 
 	"description": "Colors each row of an instrument if a value has been provided.",
 
-	"namespace": "ABCD\\CompleteRows",
+	"namespace": "ABCD\\CompleteRow",
 
 	"authors": [
 		{
@@ -14,7 +14,8 @@
 	],
 
 	"permissions": [
-                "redcap_every_page_top"
+	    "redcap_data_entry_form",
+	    "redcap_survey_page"
 	],
 
         "enable-every-page-hooks-on-system-pages": false,
