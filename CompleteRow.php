@@ -24,6 +24,7 @@ class CompleteRow extends AbstractExternalModule {
        var inputs = jQuery(this).find('input');
        // for each of the inputs in this row see if at least one entry has a value (muliple-choice answers have multiple inputs)
        for (var i = 0; i < inputs.length; i++) {
+         console.log("the type of this is :" + inputs[i].type + " value: " + inputs[i].value);
          if (inputs[i].type == "radio" && inputs[i].checked) {
             //console.log("Found set in " + jQuery(this).attr('id') + " as " + inputs[i].value + " input: " + inputs[i]);
 	    existingEntries = true; // at least one input in this tr is not empty
@@ -34,12 +35,18 @@ class CompleteRow extends AbstractExternalModule {
 	    break;
          }
        }
+       var inputs = jQuery(this).find('select');
+       for (var i = 0; i < inputs.length; i++) {
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
+         if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;
+	 }
+       }	 
        if (existingEntries) {
-          //jQuery(this).find('td').css('background-color', '#dbf7df');
           jQuery(this).find('td').css('background-color', color);
        } else if (inputs.length > 0) {
-          // console.log("Nothing set in " + jQuery(this).attr('id'));
-          // jQuery(this).find('td').css('background-color', '#999');
+          jQuery(this).find('td').css('background-color', "white");
        }
      });
   }
@@ -50,6 +57,7 @@ class CompleteRow extends AbstractExternalModule {
  	    jQuery('tbody tr').click(function() {
    	       updateBackgrounds(color);
             });
+            updateBackgrounds(color);
         });
      })(window, document, jQuery);
 </script>
@@ -63,7 +71,7 @@ class CompleteRow extends AbstractExternalModule {
                         ?>
 <script type='text/javascript'>
   // color all rows that have values assigned by the user
-  function updateBackgrounds() {
+  function updateBackgrounds(color) {
      jQuery('tbody tr').each(function() {
        // for each row we check now if there is at least one entry in there that has been set
        existingEntries = false;
@@ -71,10 +79,11 @@ class CompleteRow extends AbstractExternalModule {
        var inputs = jQuery(this).find('input');
        // for each of the inputs in this row see if at least one entry has a value (muliple-choice answers have multiple inputs)
        for (var i = 0; i < inputs.length; i++) {
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
          if (inputs[i].type == "radio" && inputs[i].checked) {
             //console.log("Found set in " + jQuery(this).attr('id') + " as " + inputs[i].value + " input: " + inputs[i]);
 	    existingEntries = true; // at least one input in this tr is not empty
-	    break;	    
+	    break;
 	 } else if ( inputs[i].type == "text" && inputs[i].value !== "") {
              //console.log("Found set in " + jQuery(this).attr('id') + " as " + inputs[i].value + " input: " + inputs[i]);
 	     // we could have a calculated field, in that case we don't want to mark it
@@ -85,11 +94,18 @@ class CompleteRow extends AbstractExternalModule {
 	     break;
          }
        }
+       var inputs = jQuery(this).find('select');
+       for (var i = 0; i < inputs.length; i++) {
+         //console.log("the type of this is: " + inputs[i].type + " value: \"" + inputs[i].value + "\" checked: " + inputs[i].checked + " this: \"" + jQuery(this).find('td').text() + "\" full: " + JSON.stringify(inputs[i]));
+         if ( inputs[i].type == "select-one" && inputs[i].value !== "") {
+	    existingEntries = true; // at least one input in this tr is not empty
+	    break;
+	 }
+       }	 
        if (existingEntries) {
-          jQuery(this).find('td').css('background-color', '#dbf7df');
+          jQuery(this).find('td').css('background-color', color);
        } else if (inputs.length > 0) {
-          // console.log("Nothing set in " + jQuery(this).attr('id'));
-          // jQuery(this).find('td').css('background-color', '#999');
+          jQuery(this).find('td').css('background-color', "white");
        }
      });
   }
@@ -101,6 +117,7 @@ class CompleteRow extends AbstractExternalModule {
                //console.log("Someone clicked on something (in redcap_data_entry_form)");
 	       updateBackgrounds(color);
             });
+            updateBackgrounds(color);
      });
      })(window, document, jQuery);
 </script>
