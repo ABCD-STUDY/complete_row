@@ -14,8 +14,8 @@
 	],
 
 	"permissions": [
-	    "redcap_data_entry_form",
-	    "redcap_survey_page"
+	    "redcap_data_entry_form_top",
+	    "redcap_survey_page_top"
 	],
 
         "enable-every-page-hooks-on-system-pages": false,
