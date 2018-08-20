@@ -102,6 +102,8 @@ class CompleteRow extends AbstractExternalModule {
        }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
+	  // matrix fields have another level of indirection
+	  // jQuery(this).find('td').find('tr').find('td').css('background-color', color);
        } else if (inputs.length > 0) {
           jQuery(this).find('td').css('background-color', "white");
        }
@@ -214,6 +216,8 @@ class CompleteRow extends AbstractExternalModule {
        }
        if (existingEntries) {
           jQuery(this).find('td').css('background-color', color);
+	  // matrix fields have another level of indirection and color seems to not be able to be changed here
+	  //jQuery(this).find('td').find('tr').find('td.choicematrix').css('background-color', color);
        } else if (inputs.length > 0) {
           jQuery(this).find('td').css('background-color', "white");
        }
