@@ -112,7 +112,7 @@ class CompleteRow extends AbstractExternalModule {
 
      (function(window, document, $) {
         $(document).ready(function() {
-	    color = "<?php echo($color); ?>";
+	    color = "<?php echo(htmlspecialchars($color, ENT_QUOTES)); ?>";
  	    jQuery('tbody tr').click(function() {
    	       updateBackgrounds(color);
             });
@@ -226,7 +226,7 @@ class CompleteRow extends AbstractExternalModule {
 
     (function(window, document, $) {
         $(document).ready(function() {
-	    color = "<?php echo($color); ?>";
+	    color = "<?php echo(htmlspecialchars($color, ENT_QUOTES)); ?>";
      	    jQuery('tbody tr').click(function() {
                //console.log("Someone clicked on something (in redcap_data_entry_form)");
 	       updateBackgrounds(color);
